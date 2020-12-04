@@ -1,0 +1,6 @@
+Command_process.c:33:13:jingles	16	static
+Command_process.c:42:13:song1	16	static
+Command_process.c:55:13:song2	16	static
+Command_process.c:69:13:help	16	static
+Command_process.c:83:13:unknown_command	16	static
+Command_process.c:108:6:process_command	96	static

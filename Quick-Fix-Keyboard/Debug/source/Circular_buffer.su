@@ -1,0 +1,7 @@
+Circular_buffer.c:28:6:cb_init	24	static
+Circular_buffer.c:38:6:cb_Empty	16	static
+Circular_buffer.c:43:5:cb_Size	16	static
+Circular_buffer.c:48:6:cb_Full	16	static
+Circular_buffer.c:53:8:cb_Length	32	static
+Circular_buffer.c:88:8:cb_Enqueue	56	static
+Circular_buffer.c:153:8:cb_Dequeue	56	static

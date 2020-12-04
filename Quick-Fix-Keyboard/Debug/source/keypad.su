@@ -1,0 +1,7 @@
+keypad.c:64:6:delay	16	static
+keypad.c:83:6:play_freq	2080	static
+keypad.c:99:6:init_keypad	8	static
+keypad.c:126:6:keypad_scan	24	static
+keypad.c:162:6:set_output	16	static
+keypad.c:179:5:read_input	16	static
+keypad.c:194:6:key_pressed	16	static
