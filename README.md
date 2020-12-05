@@ -47,6 +47,7 @@ Source code can be found under
 
 The code from earlier assignment was used with certain changes, like implementation of comand handler table and changes in sys_write and sys_read function as suggested by Prof Howdy Pierce in his lecture series.
 
-Would also like to thank Alex Fritz for providing me the speaker, and push buttons to build the piano
+Would also like to thank Alex Fritz  and Camilla Hallin for providing me the proto bread board,  speaker, and push buttons to build the piano.
+And  Soham Kekkar for the PIANO notes for the songs.
 
 
