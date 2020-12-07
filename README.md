@@ -59,8 +59,8 @@ This project consists of some manual tests that need to be carried out to check 
                       
 #### Video Link
 Link 1 for entire functionality, Link 2 for record and play functionality(as it was implemented later)
-[Link1] https://www.youtube.com/watch?v=j4snfE-qFpo&lc=UgyvJU6IDGGy_-hLgYZ4AaABAg
-[Link2] https://youtu.be/0Cp_jirlogU
+* [Link1] https://www.youtube.com/watch?v=j4snfE-qFpo&lc=UgyvJU6IDGGy_-hLgYZ4AaABAg
+* [Link2] https://youtu.be/0Cp_jirlogU
 #### Reference and Credits
 
 The code from earlier assignment was used with certain changes, like implementation of comand handler table and changes in sys_write and sys_read function as suggested by Prof Howdy Pierce in his lecture series.
