@@ -17,8 +17,10 @@ To create a piano using FRDM KL25Z, keyboard matrix and speaker for output.The P
 TO add a functionality , where when user enters the name of the song it plays the saved tune.
 
 #### Implementation:
-Was able to meet the requirement of the project, Integrated a 2X4 matrix representing 8 classical indian notes. 
-Also implemented UART functionality, If user enters 
+Was able to meet the requirement of the project, Integrated a 2X4 matrix representing 8 classical indian notes.
+Supplement Parts:
+Also implemented UART functionality, If user enters Uart commands it accepts and process the command accordingly.
+
 Added a functionality to record the keys a user plays on the keyboard and play it back.
 * If the user enters the command record on the terminal, it starts recording , users keyboard inputs.
 * If the user enters the command play, it plays back whatever the users keyboard inputs after user pressed record.
@@ -67,5 +69,8 @@ The code from earlier assignment was used with certain changes, like implementat
 
 Would also like to thank Alex Fritz  and Camilla Hallin for providing me the proto bread board,  speaker, and push buttons to build the piano.
 And  Soham Kelkar for the PIANO notes for the songs.
+
+#### Future Plans:
+To add functionality to press two buttons at a time, this can be done by adding two frequencies, i.e adding two sine waves.
 
 
