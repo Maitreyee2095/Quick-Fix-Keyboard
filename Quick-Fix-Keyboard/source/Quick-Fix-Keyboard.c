@@ -75,7 +75,7 @@ int main(void) {
 	Init_TPM1();		//Initialize TPM1 for DAC
 	Init_DMA();			//Initialize DMA
 	init_keypad();		//Initialize Keypad
-	printf( "\n\rTesting Sine Function.....\n\r");
+	printf( "\n\rTesting Sine Function.....This may take a while...\n\r");
 	test_sine();		//test sine function
 	test_cbfifo();		//test circular buffer
 
@@ -84,6 +84,8 @@ int main(void) {
 	printf("'Song1' :Play bollywood Rabta  song\r\n");
 	printf("'Song2' :Play bollywood Piyu bole  song\r\n");
 	printf("'jingle' : Plays the jingle bells tune\r\n");
+	printf("'record' : Records the tunes played on keyboard\r\n");
+	printf("'play' : Plays back recorded tune\r\n");
 	printf("'Help' : Get the help menu\r\n");
 	while(1) {
 		printf("\r\n ? ");

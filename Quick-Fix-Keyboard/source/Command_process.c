@@ -18,7 +18,6 @@
 #include "jinglebells.h"
 #include "piyu_bole.h"
 #define ENTER 0x0D
-
 typedef void (*start_command)(const char* cmd); // Operating Using Function Pointers
 
 typedef struct {
@@ -26,6 +25,7 @@ typedef struct {
 	start_command handler;
 } command_lookup_t;	//COMMAND LOOKUP TABLE
 
+extern int record_song;
 /*********************************************************************************************************
  * static void jingles(const char* cmd)): IF COMMAND IS JINGLES PLAYS THE JINGLE BELLS SONG
  **********************************************************************************************************/
@@ -61,7 +61,22 @@ static void song2(const char* cmd){
 	piyu_bole();
 
 }
+/*********************************************************************************************************
+ * static void help(const char* cmd)): IF COMMAND IS help peints help menu for us
+ **********************************************************************************************************/
+static void record(const char* cmd)
+{
+	record_song=1;
+}
 
+/*********************************************************************************************************
+ * static void help(const char* cmd)): IF COMMAND IS help peints help menu for us
+ **********************************************************************************************************/
+static void play(const char* cmd)
+{
+	play_buffer();
+
+}
 /*********************************************************************************************************
  * static void help(const char* cmd)): IF COMMAND IS help peints help menu for us
  **********************************************************************************************************/
@@ -69,10 +84,12 @@ static void song2(const char* cmd){
 static void help(const char* cmd){
 
 	printf("\n\rEnter one of the following functions:\r\n");
-	printf("'Song1' :Play bollywood Rabta  song\r\n");
+	printf("'Song1'	:Play bollywood Rabta  song\r\n");
 	printf("'Song2' :Play bollywood Piyu bole  song\r\n");
-	printf("'jingle' : Plays the jingle bells tune\r\n");
-	printf("'Help' : Get the help menu\r\n");
+	printf("'jingle':Plays the jingle bells tune\r\n");
+	printf("'record':Records the tunes played on keyboard\r\n");
+	printf("'play'  :Plays back recorded tune\r\n");
+	printf("'Help'  :Get the help menu\r\n");
 
 }
 
@@ -88,7 +105,8 @@ static const command_lookup_t commands[] = {
 		{"jingle", jingles},
 		{"help", help},
 		{"song2",song2},
-
+		{"record",record},
+		{"play", play},
 		{"", unknown_command}
 };
 /*********************************************************************************************************

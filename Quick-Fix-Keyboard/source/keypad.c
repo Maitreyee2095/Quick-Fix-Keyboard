@@ -37,16 +37,17 @@ DEFINES
 #define NUM_ROWS 2	//TOTAL NUMBER OF ROWS
 #define NUM_COLS 4	//TOTAL NUMBER OF COLUMNS
 #define COUNT 1024 //total number of buffer elements
-
-
+#define DEBOUNCE 100000
+#define BUFFER_MAX_INDEX 50 //max index for recording buffer
 /**************************************************
  * GLOBAL VARIABLES
  ***************************************************/
 uint8_t row[2]={8,9}; //ROW,PORT PINS
 uint8_t col[4]={2,3,4,5}; // COLUMN PORT PINS ARRAY
-
-
-
+int buffer [BUFFER_MAX_INDEX];
+int record_song = 0;
+int s =0; // to keep track of buffer index
+int record_play_index = 0;
 /**********************************************************************************************************************************
 local function declartion
  ************************************************************************************************************************************/
@@ -76,7 +77,7 @@ void delay(uint32_t iterations)
 
 /**********************************************************************************************************************************
 void play_freq(int freq , int key)
- @brief	    COMPUTE SINE FUNCTION AND PLAY THE TONE
+ @brief	    COMPUTE SINE FUNCTION AND PLAY THE TONE, record the frequency if user enters record
  @param 	FREQ required frequency for sine function
  @return	void
  ************************************************************************************************************************************/
@@ -89,12 +90,54 @@ void play_freq(int freq )
 	Start_DMA_transfer(); //starts transfer
 	delay(500);
 	TPM1->SC &= ~TPM_SC_CMOD_MASK; //stop note
+
+	if(record_song == 1) // if user wants to record song
+	{
+		if (record_play_index>0) // check if buffer already has previously recorded tune, if so clear it
+		{
+			s = 0; //reset buffer index to 0, to overwrite buffer
+			record_play_index=0; // reset play index
+		}
+		if(s < (BUFFER_MAX_INDEX)) // check if buffer is not full
+		{
+			buffer[s++] = freq; // save input freq in buffer
+		}
+		else
+		{
+			s=0; //if buffer is full reset , overwrite buffer
+		}
+	}
+}
+
+
+/**********************************************************************************************************************************
+void play_buffer()
+ @brief	    plays out recorded tune.
+ @param 	void
+ @return	void
+ ************************************************************************************************************************************/
+void play_buffer()
+{
+	record_play_index ++; //keep a track of how many times user plays the tune
+
+	for(int i=0;i<s;i++) //playout recorded buffer
+	{
+		int sample;
+		uint16_t buffs_op[COUNT];
+		sample = tone_to_samples(buffer[i], buffs_op, COUNT); //computes tone for specified frequency
+		Copy_DMA_buffer(buffs_op, sample);//get buffer ready to be copied
+		Start_DMA_transfer(); //starts transfer
+		delay(500);
+		TPM1->SC &= ~TPM_SC_CMOD_MASK; //stop note
+
+
+	}
 }
 /**************************************************
-*  void init_keypad(void);
-* @brief:    Initialize the 4x4 matrix keypad GPIO's
-* @param:    none
-* @return:	 none
+ *  void init_keypad(void);
+ * @brief:    Initialize the 4x4 matrix keypad GPIO's
+ * @param:    none
+ * @return:	 none
  ***************************************************/
 void init_keypad(void)
 {
@@ -123,6 +166,26 @@ void init_keypad(void)
 	PORTE->PCR[5] = (PORT_PCR_MUX(1) | PORT_PCR_PE(1)); // PTE5
 }
 
+/**********************************************************************************************************************************
+void keypad_scan(void)
+ @brief	     Scan matrix keypad to check for buttons pressed.
+ 	 	 	 this logic was used from White's book Making Embedded systems.
+ 	 	 	 The colums are all inputs with internal pull ups enabled, and rows are all outputs.
+ 	 	 	 Start with assuming all row outputs are high to start with.
+ 	 	 	 Set one row to low and read all column inputs, if certain column is low key can be detected as the row index and column index.
+
+ 	 	 	 for this project we use keyboard matrix of 2X4
+
+ 	 	 	   Key1 		key2 		key3		 key4
+ 	 	 	(row1,col1)	(row1,col2)	(row1,col3)	(row1,col4)
+  	 	 	   Key5 		key6 		key7		 key8
+ 	 	 	(row1,col1)	(row1,col2)	(row1,col3)	(row1,col4)
+
+
+
+ @param 	 void
+ @return	 void
+ ************************************************************************************************************************************/
 void keypad_scan(void)
 {
 
@@ -136,7 +199,7 @@ void keypad_scan(void)
 			//if certain column pin reads low that key is pressed
 			if (read_input(c) == LOW)
 			{
-				for(int i=0; i<100000 ;i++); //for software debounce
+				for(int i=0; i<DEBOUNCE ;i++); //for software debounce
 
 				if (read_input(c) == LOW)
 				{
@@ -153,10 +216,10 @@ void keypad_scan(void)
 }
 
 /**************************************************
-* void set_output(int r, int dir)
-* @brief:   makes the port of required pin high or low
-* @param:    r as pin number
-* @return:	 dir as high or low
+ * void set_output(int r, int dir)
+ * @brief:   makes the port of required pin high or low
+ * @param:    r as pin number
+ * @return:	 dir as high or low
  ***************************************************/
 
 void set_output(int r, int dir)
@@ -171,10 +234,10 @@ void set_output(int r, int dir)
 	}
 }
 /**************************************************
-* int read_input(int c)
-* @brief:   reads the input of given pin
-* @param:    c as pin number
-* @return:	 input thats read
+ * int read_input(int c)
+ * @brief:   reads the input of given pin
+ * @param:    c as pin number
+ * @return:	 input thats read
  ***************************************************/
 int read_input(int c)
 {
@@ -184,11 +247,11 @@ int read_input(int c)
 }
 
 /**************************************************
-* void key_pressed(int r, int c)
-* @brief:  figures out which key was pressed
-* @param:    r as row pin
-* @param	 c as column
-* @return:	 input thats read
+ * void key_pressed(int r, int c)
+ * @brief:  figures out which key was pressed
+ * @param:    r as row pin
+ * @param	 c as column
+ * @return:	 input thats read
  ***************************************************/
 
 void key_pressed(int r, int c)
@@ -227,7 +290,7 @@ void key_pressed(int r, int c)
 			play_freq(NI); //play freq for 7th key
 			break;
 		case 3:
-			play_freq(SA);//play freq for 8th key
+			play_freq(SA_);//play freq for 8th key
 			break;
 		}
 	}
