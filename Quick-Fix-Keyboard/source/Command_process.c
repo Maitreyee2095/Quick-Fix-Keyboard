@@ -62,7 +62,7 @@ static void song2(const char* cmd){
 
 }
 /*********************************************************************************************************
- * static void help(const char* cmd)): IF COMMAND IS help peints help menu for us
+ * static void record(const char* cmd)): IF COMMAND IS record sets record song flag to 1 to start recording
  **********************************************************************************************************/
 static void record(const char* cmd)
 {
@@ -70,7 +70,7 @@ static void record(const char* cmd)
 }
 
 /*********************************************************************************************************
- * static void help(const char* cmd)): IF COMMAND IS help peints help menu for us
+ * static void help(const char* cmd)): IF COMMAND IS play starts playing recorded song
  **********************************************************************************************************/
 static void play(const char* cmd)
 {
@@ -78,7 +78,7 @@ static void play(const char* cmd)
 
 }
 /*********************************************************************************************************
- * static void help(const char* cmd)): IF COMMAND IS help peints help menu for us
+ * static void help(const char* cmd)): IF COMMAND IS help prints help menu for us
  **********************************************************************************************************/
 
 static void help(const char* cmd){
